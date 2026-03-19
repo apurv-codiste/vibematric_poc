@@ -1,6 +1,12 @@
 import { NextRequest, NextResponse } from 'next/server';
 
 export async function POST(request: NextRequest) {
+  const accessToken = request.cookies.get('sb_access_token')?.value;
+
+  if (!accessToken) {
+    return NextResponse.json({ error: 'Unauthorized: No Supabase token found.' }, { status: 401 });
+  }
+
   const { sessionId, query } = await request.json();
 
   if (!sessionId || !query) {

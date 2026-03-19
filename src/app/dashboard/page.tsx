@@ -419,6 +419,10 @@ export default function Dashboard() {
     setFetchingProjects(true);
     try {
       const res = await fetch('/api/projects');
+      if (res.status === 401) {
+        router.push('/');
+        return;
+      }
       const data = await res.json();
       setProjects(Array.isArray(data) ? data : []);
     } catch (err) { setError('Failed to fetch projects'); }
